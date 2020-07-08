@@ -1,0 +1,61 @@
+1. pre tag can be used to prevent removal of special characters (eg. '\n')
+  problem is that css line-break doesn't work. this can fortunately be
+  fixed with:
+  ```
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+  ```
+
+2. prevent user highlighting text using:
+  ```
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  ```
+
+3. repeating-linear-gradient can be used to create striped backgrounds:
+  ```
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(0, 0, 0, 0.2) 1px,
+    rgba(0, 0, 0, 0.2) 2px
+  );
+  ```
+
+4. custom cursor can be defined with images:
+  ```
+  cursor: url(/path/to/img.png, auto);
+  ```
+
+5. auto scroll to bottom of element using:
+  ```
+  element.scrollTop(element.height())
+  ```
+
+6. async function which works like a timer:
+  ```
+  function (ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
+  ```
+
+7. jQuery UI has a draggable method:
+  ```
+  $('selector').draggable()
+
+  // to specify which element inside the container
+  // which triggers the dragging effect
+
+   $(".dialog").draggable({ handle:'selector'});
+
+   // u can position elements at top when active using
+    $(".dialog").draggable({ stack: 'selector'});
+   ``` 
