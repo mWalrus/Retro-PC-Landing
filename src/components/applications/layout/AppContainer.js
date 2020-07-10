@@ -13,13 +13,8 @@ export default class AppContainer extends React.Component {
   }
 
   setIndex(e) {
-    var current = e.target.parentNode.parentNode.classList.contains(
-      'container'
-    )
-      ? e.target.parentNode.parentNode
-      : e.target.parentNode
     for (let app of document.querySelectorAll('.container')) {
-      app !== current
+      app !== e.currentTarget
         ? (app.style.zIndex = 1)
         : (app.style.zIndex = 2)
     }
@@ -34,8 +29,8 @@ export default class AppContainer extends React.Component {
       >
         <div className={'container ' + this.props.appName}>
           <AppHeader
-            title={this.props.title}
-            closeApp={this.close.bind(this)}
+            title={this.props.appName}
+            closeApp={this.props.closeApp}
           />
           <div className="window">{this.props.appContent}</div>
           <AppFooter chunks={this.props.footerChunks} />

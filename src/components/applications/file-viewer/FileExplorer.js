@@ -1,5 +1,6 @@
 import React from 'react'
 import Dir from './Dir'
+import fetch from 'node-fetch'
 
 export default class FileExplorer extends React.Component {
   constructor(props) {
@@ -13,13 +14,16 @@ export default class FileExplorer extends React.Component {
     this.getDirs()
   }
 
-  getDirs() {
+  async getDirs() {
+    const req = await fetch('http://85.229.117.218:3001/apps')
+    const res = await req.json()
     var dirs = []
-    for (let i = 0; i < 50; i++) {
-      dirs.push(<Dir name="folder" />)
+    for (let dir of res.dirs) {
+      dirs.push(<Dir name={dir} />)
     }
     this.setState({ dirs })
   }
+
   render() {
     return (
       <div className="file-explorer">

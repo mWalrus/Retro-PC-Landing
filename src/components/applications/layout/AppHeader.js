@@ -9,7 +9,11 @@ export default class AppHeader extends React.Component {
         <div className="btns-after">
           <span className="btn">{'\u25BE'}</span>
           <span className="btn">{'\u25B4'}</span>
-          <span className="btn" onClick={this.props.closeApp}>
+          <span
+            className="btn"
+            id={this.props.title}
+            onClick={(e) => this.props.closeApp(e)}
+          >
             {'\u2A2F'}
           </span>
         </div>

@@ -1,4 +1,5 @@
 import React from 'react'
+import DateTime from './DateTime'
 
 export default class PageHeader extends React.Component {
   render() {
@@ -9,7 +10,7 @@ export default class PageHeader extends React.Component {
         <span className="option">Edit</span>
         <span className="option">View</span>
         <span className="option">Help</span>
-        <span className="date-time">Mon 02 Dec 2020, 08:23 PM</span>
+        <DateTime />
       </header>
     )
   }
