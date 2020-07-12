@@ -4,6 +4,7 @@ import DesktopIcons from './DesktopIconContainer'
 import AppContainer from '../layout/AppContainer'
 import TerminalView from '../terminal/TerminalView'
 import FileExplorer from '../file-viewer/FileExplorer'
+import { v4 as uuidv4 } from 'uuid'
 import BackGround from '../../../img/statue-1594091269482-1978.jpg'
 import '../../../css/main.css'
 
@@ -29,6 +30,7 @@ export default class Desktop extends React.Component {
           'scan complete',
         ]}
         closeApp={this.closeApp.bind(this)}
+        key={uuidv4()}
       />
     )
   }
@@ -40,6 +42,7 @@ export default class Desktop extends React.Component {
         appContent={<TerminalView />}
         footerChunks={['administrator', 'size: 400 x 600']}
         closeApp={this.closeApp.bind(this)}
+        key={uuidv4()}
       />
     )
   }

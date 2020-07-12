@@ -1,6 +1,9 @@
 import React from 'react'
 import Dir from './Dir'
 import fetch from 'node-fetch'
+import { v4 as uuidv4 } from 'uuid'
+
+require('dotenv').config()
 
 export default class FileExplorer extends React.Component {
   constructor(props) {
@@ -11,15 +14,31 @@ export default class FileExplorer extends React.Component {
   }
 
   componentDidMount() {
-    this.getDirs()
+    this.setDirs()
   }
 
-  async getDirs() {
-    const req = await fetch('http://85.229.117.218:3001/apps')
-    const res = await req.json()
+  async getDirs(domainName, port, route) {
+    try {
+      const req = await fetch(
+        `http://${domainName}:${port}/${route}?appid=${process.env.REACT_APP_API_KEY}`
+      )
+      return await req.json()
+    } catch (error) {
+      return { error }
+    }
+  }
+
+  async setDirs() {
+    let res = await this.getDirs('pi.hole', '8080', 'apps')
+    if (res.error)
+      res = await this.getDirs('85.229.117.218', '8081', 'apps')
+    if (res.msg) {
+      this.setState({ dirs: [<Dir name={res.msg} key={uuidv4()} />] })
+      return
+    }
     var dirs = []
     for (let dir of res.dirs) {
-      dirs.push(<Dir name={dir} />)
+      dirs.push(<Dir name={dir} key={uuidv4()} />)
     }
     this.setState({ dirs })
   }

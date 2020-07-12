@@ -2,6 +2,8 @@ import React from 'react'
 import ScrollToBotton from 'react-scroll-to-bottom'
 import fetch from 'node-fetch'
 
+require('dotenv').config()
+
 export default class TerminalView extends React.Component {
   constructor(props) {
     super(props)
@@ -12,27 +14,39 @@ export default class TerminalView extends React.Component {
   }
 
   async componentDidMount() {
-    await this.setMsg(this.getLogo())
-    await this.setMsg(await this.getHWInfo())
-    await this.setMsg(await this.getPiHoleInfo())
+    await this.processLines(this.getLogo())
+    await this.processLines(await this.getHWInfo())
+    await this.processLines(await this.getPiHoleInfo())
 
     // const msgSplit = msg.split('\n')
   }
 
-  async setMsg(lines) {
+  async processLines(lines) {
+    if (lines.length === 1) {
+      this.updateMsg(lines[0].trim())
+    }
     for (let line of lines) {
-      line = line.trim()
-      for (let i = 0; i < line.length; i++) {
-        this.setState({ msg: this.state.msg + line.charAt(i) })
-        await this.sleep(2)
-      }
-      this.setState({ msg: this.state.msg + '\n' })
+      await this.updateMsg(line.trim())
     }
   }
 
-  async callAPI(url) {
-    let req = await fetch(url)
-    return await req.json()
+  async updateMsg(line) {
+    for (let i = 0; i < line.length; i++) {
+      this.setState({ msg: this.state.msg + line.charAt(i) })
+      await this.sleep(2)
+    }
+    this.setState({ msg: this.state.msg + '\n' })
+  }
+
+  async callAPI(domainName, port, route) {
+    try {
+      let req = await fetch(
+        `http://${domainName}:${port}/${route}?appid=${process.env.REACT_APP_API_KEY}`
+      )
+      return await req.json()
+    } catch (error) {
+      return { error }
+    }
   }
 
   getLogo() {
@@ -48,9 +62,10 @@ export default class TerminalView extends React.Component {
   }
 
   async getHWInfo() {
-    const res = await this.callAPI(
-      'http://85.229.117.218:3001/hwinfo'
-    )
+    let res = await this.callAPI('pi.hole', '8080', 'hwinfo')
+    if (res.error)
+      res = await this.callAPI('85.229.117.218', '8081', 'hwinfo')
+    if (res.msg) return [res.msg]
     return [
       '============== HW INFO ==============',
       'OS: ' + res.os,
@@ -60,9 +75,10 @@ export default class TerminalView extends React.Component {
   }
 
   async getPiHoleInfo() {
-    const res = await this.callAPI(
-      'http://85.229.117.218:3001/pihole'
-    )
+    let res = await this.callAPI('pi.hole', '8080', 'pihole')
+    if (res.error)
+      res = await this.callAPI('85.229.117.218', '8081', 'pihole')
+    if (res.msg) return [res.msg]
 
     const result = [
       '========== PIHOLE VERSION ===========',
