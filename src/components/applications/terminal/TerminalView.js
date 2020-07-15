@@ -62,9 +62,17 @@ export default class TerminalView extends React.Component {
   }
 
   async getHWInfo() {
-    let res = await this.callAPI('pi.hole', '8080', 'hwinfo')
+    let res = await this.callAPI(
+      process.env.REACT_APP_API_URL1,
+      '8080',
+      'hwinfo'
+    )
     if (res.error)
-      res = await this.callAPI('85.229.117.218', '8081', 'hwinfo')
+      res = await this.callAPI(
+        process.env.REACT_APP_API_URL2,
+        '8081',
+        'hwinfo'
+      )
     if (res.msg) return [res.msg]
     return [
       '============== HW INFO ==============',
@@ -75,9 +83,17 @@ export default class TerminalView extends React.Component {
   }
 
   async getPiHoleInfo() {
-    let res = await this.callAPI('pi.hole', '8080', 'pihole')
+    let res = await this.callAPI(
+      process.env.REACT_APP_API_URL1,
+      '8080',
+      'pihole'
+    )
     if (res.error)
-      res = await this.callAPI('85.229.117.218', '8081', 'pihole')
+      res = await this.callAPI(
+        process.env.REACT_APP_API_URL2,
+        '8081',
+        'pihole'
+      )
     if (res.msg) return [res.msg]
 
     const result = [

@@ -1,4 +1,5 @@
 import React from 'react'
+import lodash from 'lodash'
 import PageHeader from './SiteHeader'
 import DesktopIcons from './DesktopIconContainer'
 import AppContainer from '../layout/AppContainer'
@@ -13,10 +14,8 @@ export default class Desktop extends React.Component {
     super(props)
     this.state = {
       terminal: this.generateTerminalApp(),
-      fileExplorer: this.generateFolderApp(),
+      applications: this.generateFolderApp(),
     }
-    this.generateFolderApp.bind(this)
-    this.generateTerminalApp.bind(this)
   }
 
   generateFolderApp = () => {
@@ -48,23 +47,31 @@ export default class Desktop extends React.Component {
   }
 
   closeApp(e) {
-    if (e.currentTarget.id === 'applications') {
-      this.setState({ fileExplorer: null })
-    } else if (e.currentTarget.id === 'terminal') {
-      this.setState({ terminal: null })
-    }
+    const foundKey = Object.keys(this.state).filter(
+      (key) => key === lodash.camelCase(e.currentTarget.id)
+    )
+
+    if (!foundKey[0]) return
+
+    this.setState({ [foundKey]: null })
   }
 
   spawnNewApp(e) {
-    if (e.currentTarget.id === '1') {
-      this.setState({
-        terminal: this.generateTerminalApp(),
-      })
-    } else {
-      this.setState({
-        fileExplorer: this.generateFolderApp(),
-      })
+    const key = e.currentTarget.getAttribute('name')
+    const id = e.currentTarget.id
+
+    let app = null
+    switch (id) {
+      case '0':
+        app = this.generateTerminalApp()
+        break
+      case '1':
+        app = this.generateFolderApp()
+        break
+      default:
+        break
     }
+    this.setState({ [key]: app })
   }
 
   render() {
@@ -73,12 +80,13 @@ export default class Desktop extends React.Component {
         <img src={BackGround} alt="bg" />
         <PageHeader />
         <main>
-          <DesktopIcons iconClicked={this.spawnNewApp.bind(this)} />
-          {[this.state.terminal, this.state.fileExplorer].map(
-            (app) => {
-              return app
-            }
-          )}
+          <DesktopIcons
+            iconClicked={this.spawnNewApp.bind(this)}
+            appNames={Object.keys(this.state)}
+          />
+          {[...Object.keys(this.state)].map((app) => {
+            return this.state[app]
+          })}
         </main>
       </div>
     )

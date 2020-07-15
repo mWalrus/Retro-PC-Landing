@@ -1,68 +1,155 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Retro Dashboard
 
-## Available Scripts
+A Windows 98 inspired dashboard landing page.
 
-In the project directory, you can run:
+![app](https://i.imgur.com/hD67hTt.png)
 
-### `npm start`
+# Features
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Draggable windows
+- Closable windows
+- Desktop icons launch respective program
+- Time and date in header
+- Relatively simple to create a new app
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+# Applications
 
-### `npm test`
+### File explorer
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The file explorer application comes with a file tree view and a folder
+view interface.
 
-### `npm run build`
+### Terminal
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The terminal is a read-only terminal window that outputs information
+about the webserver it is currently sitting on.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+# Creating a new application
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Creating a new application is fairly simple. The process contains only
+a few steps:
 
-### `npm run eject`
+### Step 1: App creation
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+File: `Desktop.js`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Create an application template like this:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
+// example app template
+generateExampleApp = () => {
+  return (
+    <AppContainer
+      appName="Example Application"
+      appContent={<h1>Hello World!</h1>}
+      footerChunks={['example-footer-item', 'example-footer-item']}
+      closeApp={this.closeApp.bind(this)}
+      key={uuidv4()}
+    />
+  )
+}
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### props
 
-## Learn More
+- `appName` this is the applications identifier and will show in the
+  header of the app.
+- `appContent` this is what will be displayed inside the applications
+  main window.
+- `footerChunks` these will be present in the footer (I don't
+  recommend more than 3 items). Supply an array of strings.
+- `closeApp` bind it to the closeApp method to handle closing.
+- `key` supply it to make react stop complaining about unique
+  identifiers.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Step 2: Create content
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+File: `Desktop.js`
 
-### Code Splitting
+Create the application content. Here you can create whatever you want.
+Import the new application content file into Desktop.js and provide it
+as a JSX element in the appContent prop in the AppContainer as shown
+above.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```
+appContent={<ExampleApp />}
+```
 
-### Analyzing the Bundle Size
+### Step 3: Load application in state
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+File: `Desktop.js`
 
-### Making a Progressive Web App
+Create a field in the state and set its value to the return value of
+the method.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```
+this.state = {
+  exampleApplication: this.generateExampleApp()
+}
+```
 
-### Advanced Configuration
+Alternatively you can set the field to null to prevent app from
+appearing at page load.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+```
+this.state = {
+  exampleApplication: null
+}
+```
 
-### Deployment
+**IMPORTANT:** Name the field in the state the same as the appName but
+in Camel Case! In this example case "Example Application" becomes
+"exampleApplication". This is so that the close app button and desktop
+icons can function properly.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+### Step 4: Create a desktop icon
 
-### `npm run build` fails to minify
+File: `DesktopIconContainer.js`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+To create a desktop icon you just need to supply an image.
+
+First place the icon in `src/img` and import it:
+`import <YOUR-NEW-ICON> from '../../../img/<YOUR-NEW-ICON>.<file-extension>'`
+
+Then you just supply it to the icons array inside the state:
+
+```
+this.state = {
+  icons: [<ALREADY-DEFINED-ICON>, <ALREADY-DEFINED-ICON>, <YOUR-NEW-ICON>]
+}
+```
+
+### Step 5: Hook desktop icon to app
+
+File: `Desktop.js`
+
+Inside the spawnNewApp method you need to provide a case in the
+switch/case statement.
+
+**NOTE:** The desktop icon's id is equal to the application's index in
+the state.
+
+```
+spawnNewApp(e) {
+    const key = e.currentTarget.getAttribute('name')
+    const id = e.currentTarget.id
+
+    let app = null
+    switch (id) {
+      case '0':
+        app = this.generateTerminalApp()
+        break
+      case '1':
+        app = this.generateFolderApp()
+        break
+   __________________________________________
+  |   case '2':                              |
+  |     app = this.generateExampleApp()      |
+  |     break                                |
+   __________________________________________
+      default:
+        break
+    }
+    this.setState({ [key]: app })
+  }
+```
