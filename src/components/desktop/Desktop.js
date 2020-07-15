@@ -2,12 +2,12 @@ import React from 'react'
 import lodash from 'lodash'
 import PageHeader from './SiteHeader'
 import DesktopIcons from './DesktopIconContainer'
-import AppContainer from '../layout/AppContainer'
-import TerminalView from '../terminal/TerminalView'
-import FileExplorer from '../file-viewer/FileExplorer'
+import AppContainer from '../applications/layout/AppContainer'
+import TerminalView from '../applications/terminal/TerminalView'
+import FileExplorer from '../applications/file-viewer/FileExplorer'
 import { v4 as uuidv4 } from 'uuid'
-import BackGround from '../../../img/statue-1594091269482-1978.jpg'
-import '../../../css/main.css'
+import BackGround from '../../img/statue-1594091269482-1978.jpg'
+import '../../css/main.css'
 
 export default class Desktop extends React.Component {
   constructor(props) {

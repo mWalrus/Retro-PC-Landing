@@ -1,7 +1,7 @@
 import React from 'react'
 import Icon from './DesktopIcon'
-import FolderIcon from '../../../img/directory_closed-4.png'
-import TerminalIcon from '../../../img/console_prompt-0.png'
+import FolderIcon from '../../img/directory_closed-4.png'
+import TerminalIcon from '../../img/console_prompt-0.png'
 
 export default class DesktopIcons extends React.Component {
   constructor(props) {
