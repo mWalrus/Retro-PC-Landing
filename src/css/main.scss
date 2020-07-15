@@ -17,7 +17,6 @@ body {
   cursor: $default, auto;
   overflow: hidden;
   .application-container {
-    font-family: Ticketing;
     &::before {
       content: ' ';
       width: 100%;
@@ -34,7 +33,7 @@ body {
         rgba(0, 0, 0, 0.2) 2px
       );
     }
-    > img {
+      > img {
       position: absolute;
       z-index: -2;
       width: 100vw;
@@ -167,6 +166,7 @@ body {
           .chunk {
             box-sizing: border-box;
             border: 0.15rem inset white;
+            padding-left: .2rem;
           }
         }
       }
@@ -392,12 +392,4 @@ body {
   .applications {
     left: 1rem;
   }
-}
-
-@font-face {
-  font-family: 'ticketingregular';
-  src: url('../fonts/ticketing-jjb0-webfont.woff') format('woff2'),
-    url('../fonts/ticketing-jjb0-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
 }

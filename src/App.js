@@ -3,7 +3,7 @@ import Desktop from './components/desktop/Desktop'
 
 class App extends React.Component {
   render() {
-    return <Desktop />
+    return <Desktop/>
   }
 }
 

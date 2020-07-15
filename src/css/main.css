@@ -12,10 +12,6 @@ body {
   overflow: hidden;
 }
 
-body .application-container {
-  font-family: Ticketing;
-}
-
 body .application-container::before {
   content: ' ';
   width: 100%;
@@ -197,6 +193,7 @@ body .application-container main .container footer .chunk {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border: 0.15rem inset white;
+  padding-left: .2rem;
 }
 
 body .application-container main .terminal {
@@ -425,12 +422,5 @@ main
   .applications {
     left: 1rem;
   }
-}
-
-@font-face {
-  font-family: 'ticketingregular';
-  src: url("../fonts/ticketing-jjb0-webfont.woff") format("woff2"), url("../fonts/ticketing-jjb0-webfont.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
 }
 /*# sourceMappingURL=main.css.map */
