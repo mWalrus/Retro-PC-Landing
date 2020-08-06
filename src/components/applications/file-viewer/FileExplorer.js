@@ -30,13 +30,13 @@ export default class FileExplorer extends React.Component {
 
   async setDirs() {
     let res = await this.getDirs(
-      process.env.REACT_APP_API_URL2,
+      process.env.REACT_APP_API_URL1,
       '8081',
       'apps'
     )
     if (res.error) {
       res = await this.getDirs(
-        process.env.REACT_APP_API_URL1,
+        process.env.REACT_APP_API_URL2,
         '8080',
         'apps'
       )
